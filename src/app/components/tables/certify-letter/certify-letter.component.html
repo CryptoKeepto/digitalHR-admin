@@ -1,0 +1,54 @@
+<div class="ui one column grid">
+  <div class="ui icon buttons">
+    <button class="ui basic button" (click)="reject(1)">Reject</button>
+    <button class="ui basic button" (click)="complete(2)">Complete</button>
+  </div>
+  <div class="column">
+    <div class="ui raised segment">
+      <table class="ui very compact table">
+        <thead>
+          <tr>
+            <th>
+              <div class="ui checkbox">
+                <input type="checkbox" (change)="checkedAll($event)">
+                <label hidden></label>
+              </div>
+            </th>
+            <th>Ticket ID</th>
+            <th>Request date</th>
+            <th>Approved date</th>
+            <th>Employee ID</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Document request</th>
+            <th>Number of copy</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td>
+              <div class="ui checkbox" (change)="checkedChange(user, $event)">
+                <input type="checkbox">
+                <label hidden></label>
+              </div>
+            </td>
+            <td>{{ user.ticketID }}</td>
+            <td>{{ user.createdAt }}</td>
+            <td>{{ user.modifiedAt }}</td>
+            <td>{{ user.owner.employeeID }}</td>
+            <td>{{ user.owner.firstName }}</td>
+            <td>{{ user.owner.lastName }}</td>
+            <td>{{ user.typeCertifyLetter }}</td>
+            <td>{{ user.owner.numberOfCopy }}</td>
+            <td>
+              <div *ngIf="user.status == 0" class="ui yellow right ribbon label">Pending</div>
+              <div *ngIf="user.status == 1" class="ui red right ribbon label">Reject</div>
+              <div *ngIf="user.status == 2" class="ui green right ribbon label">Complete</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
