@@ -1,11 +1,21 @@
 <div class="ui one column grid">
-  <div class="ui icon buttons">
-    <button class="ui basic button" (click)="reject(1)">Reject</button>
-    <button class="ui basic button" (click)="complete(2)">Complete</button>
+  <div class="column">
+    <div class="ui icon buttons">
+      <button class="ui blue button" (click)="generateWord()"><i class="file word icon"></i> Word</button>
+      <button class="ui green button" (click)="generateExcel()"><i class="file excel icon"></i> Excel</button>
+      <button class="ui red button" (click)="generatePdf()"><i class="file pdf icon"></i> PDF</button>
+    </div>
+    <div class="ui icon buttons right floated">
+        <button class="ui basic button" (click)="reject(1)">Rejected</button>
+        <button class="ui basic button" (click)="complete(2)">Completed</button>
+    </div>
   </div>
+</div>
+
+<div class="ui one column grid">
   <div class="column">
     <div class="ui raised segment">
-      <table class="ui very compact table">
+      <table class="ui celled very compact table">
         <thead>
           <tr>
             <th>
@@ -43,11 +53,22 @@
             <td>{{ user.owner.numberOfCopy }}</td>
             <td>
               <div *ngIf="user.status == 0" class="ui yellow right ribbon label">Pending</div>
-              <div *ngIf="user.status == 1" class="ui red right ribbon label">Reject</div>
-              <div *ngIf="user.status == 2" class="ui green right ribbon label">Complete</div>
+              <div *ngIf="user.status == 1" class="ui red right ribbon label">Rejected</div>
+              <div *ngIf="user.status == 2" class="ui green right ribbon label">Completed</div>
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="10">
+              <div class="ui right floated pagination menu">
+                <div *ngFor="let item of pagination">
+                  <a class="item" (click)="itemPagination(item + 1)">{{ item + 1 }}</a>
+                </div>
+              </div>
+            </th>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>
