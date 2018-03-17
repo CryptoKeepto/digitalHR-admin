@@ -22,7 +22,7 @@ export class CertifyLetterComponent implements OnInit {
   }
 
   private getCertifyLetterAll() {
-    this.certifyLetterService.getCertifyLetterAll(1, 10)
+    this.certifyLetterService.getCertifyLetterAll(1, 5)
       .subscribe(
         (res) => {
           this.users = res.message.data;
@@ -38,7 +38,7 @@ export class CertifyLetterComponent implements OnInit {
   }
 
   private itemPagination(item: number) {
-    this.certifyLetterService.getCertifyLetterAll(item, 10)
+    this.certifyLetterService.getCertifyLetterAll(item, 5)
       .subscribe(
         (res) => {
           this.users = res.message.data;
@@ -72,54 +72,66 @@ export class CertifyLetterComponent implements OnInit {
     return result;
   }
 
-  private reject(status: number): void {
+  private putCertifyLetter(ticketID: string, status: number, modified: string) {
+    return new Promise((resolve, reject) => {
+      this.certifyLetterService.putCertifyLetter(ticketID, status, modified)
+        .subscribe(
+          (res) => resolve(res),
+          (err) => reject(err),
+          () => { }
+        );
+    })
+  }
+
+  private async reject(status: number): Promise<void> {
     const result: boolean = confirm("Reject ?");
     if (result) {
       for (let i = 0; i < this.usersChecked.length; i++) {
-        this.users.forEach((e) => {
-          if (this.usersChecked[i].ticketID === e.ticketID) {
+        for (let user of this.users) {
+          if (this.usersChecked[i].ticketID === user.ticketID) {
             const modified = this.getDate();
-            this.certifyLetterService.putCertifyLetter(e.ticketID, status, this.getDate())
-              .subscribe(
-                (res) => console.log(res.message),
-                (err) => console.error(err),
-                () => {
-                  this.usersChecked = [];
-                  for (let i = 0; i < $("input:checkbox").length; i++) {
-                    $("input:checkbox")[i].checked = false;
-                  }
-                  window.location.reload();
-                }
-              );
+            try {
+              let data = await this.putCertifyLetter(user.ticketID, status, modified);
+              console.log(data);
+            } catch (err) {
+              throw err;
+            }
           }
-        });
+        }
       }
+      // after update
+      this.usersChecked = [];
+      for (let i = 0; i < $("input:checkbox").length; i++) {
+        $("input:checkbox")[i].checked = false;
+      }
+      console.log("rejected");
+      // window.location.reload();
     }
   };
 
-  private complete(status: number): void {
+  private async complete(status: number): Promise<void> {
     const result: boolean = confirm("Complete ?");
     if (result) {
-      ;
       for (let i = 0; i < this.usersChecked.length; i++) {
-        this.users.forEach((e) => {
-          if (this.usersChecked[i].ticketID === e.ticketID) {
+        for (let user of this.users) {
+          if (this.usersChecked[i].ticketID === user.ticketID) {
             const modified = this.getDate();
-            this.certifyLetterService.putCertifyLetter(e.ticketID, status, this.getDate())
-              .subscribe(
-                (res) => console.log(res.message),
-                (err) => console.error(err),
-                () => {
-                  this.usersChecked = [];
-                  for (let i = 0; i < $("input:checkbox").length; i++) {
-                    $("input:checkbox")[i].checked = false;
-                  }
-                  window.location.reload();
-                }
-              );
+            try {
+              let data = await this.putCertifyLetter(user.ticketID, status, modified);
+              console.log(data);
+            } catch (err) {
+              throw err;
+            }
           }
-        });
+        }
       }
+      // after update
+      this.usersChecked = [];
+      for (let i = 0; i < $("input:checkbox").length; i++) {
+        $("input:checkbox")[i].checked = false;
+      }
+      console.log("completed");
+      // window.location.reload();
     }
   }
 
