@@ -105,7 +105,7 @@ export class CertifyLetterComponent implements OnInit {
         $("input:checkbox")[i].checked = false;
       }
       console.log("rejected");
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -131,7 +131,7 @@ export class CertifyLetterComponent implements OnInit {
         $("input:checkbox")[i].checked = false;
       }
       console.log("completed");
-      // window.location.reload();
+      window.location.reload();
     }
   }
 
