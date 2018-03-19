@@ -3,6 +3,11 @@ import { CertifyLetterService } from "../../../services/certify-letter.service";
 
 declare let $: any;
 
+interface ResponseData {
+  status: boolean,
+  message: string
+};
+
 @Component({
   selector: 'app-certify-letter',
   templateUrl: './certify-letter.component.html',
@@ -19,6 +24,23 @@ export class CertifyLetterComponent implements OnInit {
 
   ngOnInit() {
     this.getCertifyLetterAll();
+  }
+
+  private getDate(): string {
+    const d: any = new Date();
+    const year: any = d.getFullYear().toString();
+    let month: any = d.getMonth() + 1;
+    let day: any = d.getDate().toString();
+    let hour: any = d.getHours();
+    let minute: any = d.getMinutes();
+    let second: any = d.getSeconds();
+    if (month.toString().length < 2) { month = '0' + month; }
+    if (day.length < 2) { day = '0' + day; }
+    if (hour.toString().length < 2) { hour = '0' + hour; }
+    if (minute.toString().length < 2) { minute = '0' + minute; }
+    if (second.toString().length < 2) { second = '0' + second; }
+    const result = [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
+    return result;
   }
 
   private getCertifyLetterAll() {
@@ -50,27 +72,11 @@ export class CertifyLetterComponent implements OnInit {
           }
           // clear value all page
           this.usersChecked = [];
-          console.log(this.usersChecked);
         }
       );
   }
 
-  private getDate(): string {
-    const d: any = new Date();
-    const year: any = d.getFullYear().toString();
-    let month: any = d.getMonth() + 1;
-    let day: any = d.getDate().toString();
-    let hour: any = d.getHours();
-    let minute: any = d.getMinutes();
-    let second: any = d.getSeconds();
-    if (month.toString().length < 2) { month = '0' + month; }
-    if (day.length < 2) { day = '0' + day; }
-    if (hour.toString().length < 2) { hour = '0' + hour; }
-    if (minute.toString().length < 2) { minute = '0' + minute; }
-    if (second.toString().length < 2) { second = '0' + second; }
-    const result = [year, month, day].join('-') + ' ' + [hour, minute, second].join(':');
-    return result;
-  }
+
 
   private putCertifyLetter(ticketID: string, status: number, modified: string) {
     return new Promise((resolve, reject) => {
@@ -83,16 +89,16 @@ export class CertifyLetterComponent implements OnInit {
     })
   }
 
-  private async reject(status: number): Promise<void> {
+
+  private async reject(status: number): Promise<any> {
     const result: boolean = confirm("Reject ?");
     if (result) {
       for (let i = 0; i < this.usersChecked.length; i++) {
         for (let user of this.users) {
           if (this.usersChecked[i].ticketID === user.ticketID) {
-            const modified = this.getDate();
             try {
-              let data = await this.putCertifyLetter(user.ticketID, status, modified);
-              console.log(data);
+              let data: any = await this.putCertifyLetter(user.ticketID, status, this.getDate());
+              console.log(user.ticketID + " : " + data.message);
             } catch (err) {
               throw err;
             }
@@ -117,8 +123,8 @@ export class CertifyLetterComponent implements OnInit {
           if (this.usersChecked[i].ticketID === user.ticketID) {
             const modified = this.getDate();
             try {
-              let data = await this.putCertifyLetter(user.ticketID, status, modified);
-              console.log(data);
+              let data: any = await this.putCertifyLetter(user.ticketID, status, modified);
+              console.log(user.ticketID + " : " + data.message);
             } catch (err) {
               throw err;
             }
@@ -180,15 +186,11 @@ export class CertifyLetterComponent implements OnInit {
     // this.usersChecked = [];
   }
 
-  private generateExcel() {
-
-    // this.usersChecked = [];
+  private sendMail() {
+    
   }
 
-  private generatePdf() {
-
-    // this.usersChecked = [];
-
-  }
+  // private generateExcel() {}
+  // private generatePdf() {}
 
 }
