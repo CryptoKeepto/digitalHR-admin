@@ -198,12 +198,10 @@ export class CertifyLetterComponent implements OnInit {
 
   private async generateWord() {
     try {
-      this.postGenerateWord()
+      this.postGenerateWord();
     } catch (err) {
       throw err;
     }
-
-
   }
 
   private sendMail() {
