@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CertifyLetterService } from "../../../services/certify-letter.service";
+import { BrowserXhr } from '@angular/http';
 
 declare let $: any;
 
@@ -76,8 +77,6 @@ export class CertifyLetterComponent implements OnInit {
       );
   }
 
-
-
   private putCertifyLetter(ticketID: string, status: number, modified: string) {
     return new Promise((resolve, reject) => {
       this.certifyLetterService.putCertifyLetter(ticketID, status, modified)
@@ -88,7 +87,6 @@ export class CertifyLetterComponent implements OnInit {
         );
     })
   }
-
 
   private async reject(status: number): Promise<any> {
     const result: boolean = confirm("Reject ?");
@@ -153,7 +151,7 @@ export class CertifyLetterComponent implements OnInit {
     } else {
       this.users.forEach((user) => {
         if (user.ticketID === userId) {
-          this.usersChecked.splice(this.usersChecked.findIndex((v) => v === userId), 1);
+          this.usersChecked.splice(this.usersChecked.findIndex((v) => v.ticketID === userId), 1);
         }
       });
     }
@@ -180,14 +178,12 @@ export class CertifyLetterComponent implements OnInit {
     }
   };
 
-  private generateWord() {
-
-    // todo last attibute set default value
-    // this.usersChecked = [];
+ private generateWord() {
+    this.certifyLetterService.postGenerateWord(this.usersChecked);
+    // window.open("http://localhost:3000/api/word/download", "_self");
   }
 
   private sendMail() {
-    
   }
 
   // private generateExcel() {}
