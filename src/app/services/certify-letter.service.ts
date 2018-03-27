@@ -21,8 +21,8 @@ export class CertifyLetterService {
     return this.http.put(`${this.url}/certifyLetter/updateAll`, body).map((value) => value.json());
   }
 
-  public postGenerateWord (ticket) {
-    return this.http.post(`${this.url}/word/download`, ticket);
+  public postGenerateWord (user) {
+    return this.http.post(`${this.url}/word/download`, user);
   }
   
 }

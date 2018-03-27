@@ -88,9 +88,9 @@ export class CertifyLetterComponent implements OnInit {
     })
   }
 
-  private postGenerateWord() {
+  private postGenerateWord(user) {
     const promise = new Promise((resolve, reject) => {
-      this.certifyLetterService.postGenerateWord(this.usersChecked).subscribe(
+      this.certifyLetterService.postGenerateWord(user).subscribe(
         (res) => {
           if (res.status === 200) {
             resolve(
@@ -196,16 +196,15 @@ export class CertifyLetterComponent implements OnInit {
     }
   };
 
-  private async generateWord() {
+  private generateWord(user) {
     try {
-      this.postGenerateWord();
+      this.postGenerateWord(user);
     } catch (err) {
       throw err;
     }
   }
 
-  private sendMail() {
-  }
+  private sendMail() {}
 
   // private generateExcel() {}
   // private generatePdf() {}

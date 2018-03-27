@@ -1,7 +1,6 @@
 <div class="ui one column grid">
   <div class="column">
     <div class="ui icon buttons">
-      <button class="ui button" (click)="generateWord()"><i class="file word icon"></i> Word</button>
       <button class="ui button" (click)="sendMail()"><i class="envelope icon"></i> Send mail</button>
       <!-- <button class="ui button" (click)="generateExcel()"><i class="file excel icon"></i> Excel</button>
       <button class="ui button" (click)="generatePdf()"><i class="file pdf icon"></i> PDF</button> -->
@@ -33,6 +32,7 @@
             <th>Lastname</th>
             <th>Document request</th>
             <th>Number of copy</th>
+            <th>Generate Word</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -53,6 +53,9 @@
             <td>{{ user.typeCertifyLetter }}</td>
             <td>{{ user.owner.numberOfCopy }}</td>
             <td>
+              <button class="ui blue button" (click)="generateWord(user)"><i class="file word icon"></i></button>
+            </td>
+            <td>
               <div *ngIf="user.status == 0" class="ui yellow right ribbon label">Pending</div>
               <div *ngIf="user.status == 1" class="ui red right ribbon label">Rejected</div>
               <div *ngIf="user.status == 2" class="ui green right ribbon label">Completed</div>
@@ -61,7 +64,7 @@
         </tbody>
         <tfoot>
           <tr>
-            <th colspan="10">
+            <th colspan="11">
               <div class="ui right floated pagination menu">
                 <div *ngFor="let item of pagination">
                   <a class="item" (click)="itemPagination(item + 1)">{{ item + 1 }}</a>
