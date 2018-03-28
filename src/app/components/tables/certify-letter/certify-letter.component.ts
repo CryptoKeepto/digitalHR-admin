@@ -93,9 +93,7 @@ export class CertifyLetterComponent implements OnInit {
       this.certifyLetterService.postGenerateWord(user).subscribe(
         (res) => {
           if (res.status === 200) {
-            resolve(
-              window.open("http://localhost:3000/api/word/download", "_self")
-            )
+            resolve("generate word success");
           } else {
             console.error("generate doc fail")
           }
@@ -196,15 +194,20 @@ export class CertifyLetterComponent implements OnInit {
     }
   };
 
-  private generateWord(user) {
+  private async generateWord(user) {
     try {
-      this.postGenerateWord(user);
+      await this.postGenerateWord(user);
+      // fix async await
+      setTimeout(() => {
+        window.open("http://localhost:3000/api/word/download", "_self");
+      }, 5000)
     } catch (err) {
       throw err;
     }
+
   }
 
-  private sendMail() {}
+  private sendMail() { }
 
   // private generateExcel() {}
   // private generatePdf() {}
