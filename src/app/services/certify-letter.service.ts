@@ -22,7 +22,7 @@ export class CertifyLetterService {
   }
 
   public postGenerateWord (user) {
-    return this.http.post(`${this.url}/word/download`, user);
+    return this.http.post(`${this.url}/word/download`, user).map((value) => value.json());
   }
   
 }

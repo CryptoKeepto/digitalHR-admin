@@ -88,20 +88,16 @@ export class CertifyLetterComponent implements OnInit {
     })
   }
 
-  private postGenerateWord(user) {
-    const promise = new Promise((resolve, reject) => {
-      this.certifyLetterService.postGenerateWord(user).subscribe(
-        (res) => {
-          if (res.status === 200) {
-            resolve("generate word success");
-          } else {
-            console.error("generate doc fail")
-          }
+  private postGenerateWord(user, callback) {
+    this.certifyLetterService.postGenerateWord(user).subscribe(
+      (res) => {
+        if (res.status) {
+          callback(res.message);
+        } else {
+          callback(res.message);
         }
-      )
-
-    })
-    return promise;
+      }
+    )
   }
 
   private async reject(status: number): Promise<any> {
@@ -194,17 +190,11 @@ export class CertifyLetterComponent implements OnInit {
     }
   };
 
-  private async generateWord(user) {
-    try {
-      await this.postGenerateWord(user);
-      // fix async await
-      setTimeout(() => {
-        window.open("http://localhost:3000/api/word/download", "_self");
-      }, 5000)
-    } catch (err) {
-      throw err;
-    }
-
+  private generateWord(user) {
+    this.postGenerateWord(user, function (result) {
+      console.log(`${result}`);
+      window.open("http://localhost:3000/api/word/download", "_self");
+    });
   }
 
   private sendMail() { }
